@@ -29,8 +29,8 @@ public class Graph {
 
 
     private Node generateNode(){
-        double x = (double)Math.round(new Random().nextDouble()*100)/100;
-        double y = (double)Math.round(new Random().nextDouble()*100)/100;
+        double x = (double)Math.round(new Random().nextDouble()*MAX_AXIS_SIZE*100)/100;
+        double y = (double)Math.round(new Random().nextDouble()*MAX_AXIS_SIZE*100)/100;
         Node node = new Node(x,y);
         return node;
     }

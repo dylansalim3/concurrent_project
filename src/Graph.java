@@ -21,6 +21,12 @@ public class Graph {
         }else{
             nodeList.add(n1);
             nodeList.add(n2);
+
+            // Draw graph on gui
+            Draw.addNode(n1.getX(), n1.getY());
+            Draw.addNode(n2.getX(), n2.getY());
+            Draw.addEdge(n1.getX(), n1.getY(), n2.getX(), n2.getY());
+
             Line line = new Line(n1,n2);
             System.out.println("Line creation successful. Line : "+line.toString());
             return line;

@@ -18,8 +18,12 @@ public class concurrent_main {
 //        System.out.println(n1.equals(n2));
 
         int m = 1;
-        int n = 1000;
+        int n = 100;
         int t = 4;
+
+        Draw draw = new Draw();
+        draw.display();
+
         Graph graph = new Graph();
         GraphWorker[] graphWorkers = new GraphWorker[n];
         ExecutorService executorService = Executors.newFixedThreadPool(t);
@@ -53,9 +57,6 @@ public class concurrent_main {
         }
 
         executorService.shutdown();
-
-
-
     }
 
     public static void printLineDetails(List<Line> lineList){

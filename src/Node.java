@@ -1,5 +1,3 @@
-import java.util.Objects;
-
 public class Node {
     private double x;
     private double y;

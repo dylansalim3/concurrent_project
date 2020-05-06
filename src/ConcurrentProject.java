@@ -1,9 +1,10 @@
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
-public class concurrent_main {
+public class ConcurrentProject {
     public static void main(String[] args) throws InterruptedException {
 //        Scanner scan = new Scanner(System.in);
 //        System.out.println("Please insert the program timeout period.(seconds)");
@@ -18,14 +19,14 @@ public class concurrent_main {
 //        System.out.println(n1.equals(n2));
 
         int m = 1;
-        int n = 1000;
+        int n = 10000;
         int t = 4;
         Graph graph = new Graph();
         GraphWorker[] graphWorkers = new GraphWorker[n];
         ExecutorService executorService = Executors.newFixedThreadPool(t);
-        executorService.awaitTermination(m, TimeUnit.MILLISECONDS);
+//        executorService.awaitTermination(m, TimeUnit.MILLISECONDS);
 
-        for(int i=0;i<n;i++){
+        for (int i = 0; i < n; i++) {
             GraphWorker graphWorker = new GraphWorker(graph);
             graphWorkers[i] = graphWorker;
             executorService.execute(graphWorker);
@@ -39,14 +40,15 @@ public class concurrent_main {
         } catch (InterruptedException e) {
             executorService.shutdownNow();
         }
+
         List<Line> lineList = new ArrayList<>();
-        for(int i=0;i<n;i++){
-            if(executorService.isTerminated()){
+        for (int i = 0; i < n; i++) {
+            if (executorService.isTerminated()) {
                 printLineDetails(lineList);
                 break;
-            }else{
+            } else {
                 lineList.add(graphWorkers[i].getLine());
-                if(i==n-1){
+                if (i == n - 1) {
                     printLineDetails(lineList);
                 }
             }
@@ -55,12 +57,15 @@ public class concurrent_main {
         executorService.shutdown();
 
 
-
     }
 
-    public static void printLineDetails(List<Line> lineList){
-        System.out.println("line size "+lineList.size());
-        System.out.println("Line list :"+lineList.toString());
+//    private static List<Line> removeNullLine(){
+//
+//    }
+
+    public static void printLineDetails(List<Line> lineList) {
+        System.out.println("line size " + lineList.size());
+        System.out.println("Line list :" + lineList.toString());
     }
 
 }

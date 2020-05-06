@@ -1,7 +1,7 @@
 public class GraphWorker implements Runnable {
     private Graph graph;
     private Line line;
-    private boolean pass;
+    private boolean fail;
 
     public GraphWorker(Graph graph) {
         this.graph = graph;
@@ -15,20 +15,19 @@ public class GraphWorker implements Runnable {
         do {
             l = graph.drawLine();
             i++;
-        } while (l == null && i<20);
-        if(l!=null){
-            line=l;
-            pass = true;
-        }else{
-            pass = false;
+        } while (l == null && i < 20);
+        if (l != null) {
+            line = l;
+        } else {
+            fail = true;
         }
-        synchronized (this){
+        synchronized (this) {
             notifyAll();
         }
     }
 
     public synchronized Line getLine() throws InterruptedException {
-        if (line == null&&!pass) {
+        if (line == null && !fail) {
             wait();
         }
         return line;

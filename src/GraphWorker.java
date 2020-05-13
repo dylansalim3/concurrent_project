@@ -9,13 +9,12 @@ public class GraphWorker implements Runnable {
 
     @Override
     public void run() {
-        int i = 0;
+        int attempts = 0;
         Line l;
-
-        do {
-            l = graph.drawLine();
-            i++;
-        } while (l == null && i < 20);
+            do {
+                l = graph.drawLine();
+                attempts++;
+            } while (l == null && attempts < 20);
         if (l != null) {
             line = l;
         } else {

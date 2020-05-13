@@ -1,11 +1,11 @@
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
+import java.util.Set;
+import java.util.concurrent.*;
 
 public class ConcurrentProject {
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) {
 //        Scanner scan = new Scanner(System.in);
 //        System.out.println("Please insert the program timeout period.(seconds)");
 //        int m = scan.nextInt();
@@ -14,9 +14,6 @@ public class ConcurrentProject {
 //        System.out.println("Please insert the number of threads");
 //        int t = scan.nextInt();
 
-//        Node n1 = new Node(0.1,0.1);
-//        Node n2 = new Node(0.1,0.1);
-//        System.out.println(n1.equals(n2));
 
         int m = 1;
         int n = 10000;
@@ -24,48 +21,45 @@ public class ConcurrentProject {
         Graph graph = new Graph();
         GraphWorker[] graphWorkers = new GraphWorker[n];
         ExecutorService executorService = Executors.newFixedThreadPool(t);
-//        executorService.awaitTermination(m, TimeUnit.MILLISECONDS);
-
+        List<Future> lineFutures = new ArrayList<>();
         for (int i = 0; i < n; i++) {
             GraphWorker graphWorker = new GraphWorker(graph);
             graphWorkers[i] = graphWorker;
-            executorService.execute(graphWorker);
+            Future lineFuture = executorService.submit(graphWorker);
+            lineFutures.add(lineFuture);
         }
 
         try {
             if (!executorService.awaitTermination(m, TimeUnit.MILLISECONDS)) {
                 System.out.println("Terminated");
-                executorService.shutdown();
+                executorService.shutdownNow();
             }
         } catch (InterruptedException e) {
             executorService.shutdownNow();
         }
 
         List<Line> lineList = new ArrayList<>();
-        for (int i = 0; i < n; i++) {
-            if (executorService.isTerminated()) {
-                printLineDetails(lineList);
-                break;
-            } else {
+        try{
+            for(int i=0;i<lineFutures.size();i++){
+                lineFutures.get(i).get();
                 lineList.add(graphWorkers[i].getLine());
-                if (i == n - 1) {
-                    printLineDetails(lineList);
-                }
             }
+        }catch (ExecutionException e){
+            System.out.println("Execution Exception occurs");
+            e.printStackTrace();
+        }catch(InterruptedException e){
+            System.out.println("Interrupted Exception occurs");
+            e.printStackTrace();
         }
 
+        printLineDetails(lineList);
+
         executorService.shutdown();
-
-
     }
 
-//    private static List<Line> removeNullLine(){
-//
-//    }
 
     public static void printLineDetails(List<Line> lineList) {
         System.out.println("line size " + lineList.size());
         System.out.println("Line list :" + lineList.toString());
     }
-
 }

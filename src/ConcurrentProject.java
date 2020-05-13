@@ -32,7 +32,7 @@ public class ConcurrentProject {
         try {
             if (!executorService.awaitTermination(m, TimeUnit.MILLISECONDS)) {
                 System.out.println("Terminated");
-                executorService.shutdownNow();
+                executorService.shutdown();
             }
         } catch (InterruptedException e) {
             executorService.shutdownNow();

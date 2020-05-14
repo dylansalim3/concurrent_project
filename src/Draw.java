@@ -17,8 +17,8 @@ public class Draw {
             return;
         }
         Node node = sgraph.addNode(id);
-        node.addAttribute("ui.label", id);
-        node.addAttribute("xy", x, y);
+        node.setAttribute("ui.label", id);
+        node.setAttribute("xy", x, y);
     }
 
     public static void addEdge(double x1, double y1, double x2, double y2) {
@@ -26,8 +26,8 @@ public class Draw {
         String node2_id = generateId(x2, y2);
         String edge_id = node1_id + "|" + node2_id;
 
-        if (!sgraph.getNode(node1_id).getEdgeSet().isEmpty() ||
-            !sgraph.getNode(node2_id).getEdgeSet().isEmpty()) {
+        if (sgraph.getNode(node1_id).edges().count() > 0 ||
+            sgraph.getNode(node2_id).edges().count() > 0) {
             System.out.println("GUI ERROR: More than one edge");
             return;
         }

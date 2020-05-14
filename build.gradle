@@ -14,9 +14,9 @@ dependencies {
     compileOnly 'com.github.graphstream:gs-core:2.0-alpha'
     compileOnly 'com.github.graphstream:gs-ui-javafx:2.0-alpha'
     compileOnly 'com.jfoenix:jfoenix:9.0.9'
-    runtimeOnly 'org.openjfx:javafx-graphics:$javafx.version:win'
-    runtimeOnly 'org.openjfx:javafx-graphics:$javafx.version:linux'
-    runtimeOnly 'org.openjfx:javafx-graphics:$javafx.version:mac'
+//    runtimeOnly 'org.openjfx:javafx-graphics:$javafx.version:win'
+//    runtimeOnly 'org.openjfx:javafx-graphics:$javafx.version:linux'
+//    runtimeOnly 'org.openjfx:javafx-graphics:$javafx.version:mac'
 }
 
 //javafx {

@@ -9,6 +9,10 @@ public class Draw {
         sgraph = new SingleGraph("s_graph");
     }
 
+    public static SingleGraph getSgraph() {
+        return  sgraph;
+    }
+
     public static void addNode(double x, double y) {
         String id = generateId(x, y);
 
@@ -32,6 +36,10 @@ public class Draw {
             return;
         }
         sgraph.addEdge(edge_id, node1_id, node2_id);
+    }
+
+    public static void clear() {
+        sgraph.clear();
     }
 
     /**

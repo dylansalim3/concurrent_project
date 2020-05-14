@@ -6,18 +6,22 @@ import java.util.concurrent.*;
 
 public class ConcurrentProject {
     public static void main(String[] args) {
-//        Scanner scan = new Scanner(System.in);
-//        System.out.println("Please insert the program timeout period.(seconds)");
-//        int m = scan.nextInt();
-//        System.out.println("Please insert the number of random floating numbers to be generated");
-//        int n = scan.nextInt();
-//        System.out.println("Please insert the number of threads");
-//        int t = scan.nextInt();
+        // set to false if you want to test without gui
+        boolean gui = true;
+        if (gui) {
+            App.main(args);
+        } else {
+            new Draw();
+            run(1, 10000, 2);
+        }
+    }
 
-
-        int m = 1;
-        int n = 10000;
-        int t = 4;
+    /*
+        @param m - Timeout
+        @param n - Node size
+        @param t - Threads
+     */
+    static void run(int m, int n, int t) {
         Graph graph = new Graph();
         GraphWorker[] graphWorkers = new GraphWorker[n];
         ExecutorService executorService = Executors.newFixedThreadPool(t);
@@ -65,5 +69,13 @@ public class ConcurrentProject {
     public static void printLineDetails(List<Line> lineList) {
         System.out.println("Line size :" + lineList.size());
         System.out.println("Line list :" + lineList.toString());
+
+        for (Line line : lineList) {
+            Node n1 = line.getN1();
+            Node n2 = line.getN2();
+            Draw.addNode(n1.getX(), n1.getY());
+            Draw.addNode(n2.getX(), n2.getY());
+            Draw.addEdge(n1.getX(), n1.getY(), n2.getX(), n2.getY());
+        }
     }
 }

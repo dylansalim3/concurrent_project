@@ -1,0 +1,53 @@
+plugins {
+    id 'java'
+    id 'org.openjfx.javafxplugin' version '0.0.8'
+    id 'edu.sc.seis.launch4j' version '2.4.6'
+}
+
+repositories {
+    jcenter()
+    mavenCentral()
+    maven { url 'https://jitpack.io' }
+}
+
+dependencies {
+    compileOnly 'com.github.graphstream:gs-core:2.0-alpha'
+    compileOnly 'com.github.graphstream:gs-ui-javafx:2.0-alpha'
+    compileOnly 'com.jfoenix:jfoenix:9.0.9'
+    runtimeOnly 'org.openjfx:javafx-graphics:$javafx.version:win'
+    runtimeOnly 'org.openjfx:javafx-graphics:$javafx.version:linux'
+    runtimeOnly 'org.openjfx:javafx-graphics:$javafx.version:mac'
+}
+
+javafx {
+    version = '14'
+    modules = [ 'javafx.controls', 'javafx.fxml' ]
+}
+
+sourceSets {
+    main.java.srcDir 'src'
+    main.resources {
+        srcDirs = ["src"]
+        includes = ["**/*.fxml"]
+    }
+}
+
+jar {
+    from configurations.compileOnly.collect { zipTree(it) }
+    from configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    manifest.attributes 'Main-Class': 'ConcurrentProject'
+}
+
+// launch4j {
+//     headerType = 'gui'
+//     outfile = 'concurrent.exe'
+//     mainClassName = 'ConcurrentProject'
+//     dontWrapJar = true
+//     jar = '../libs/concurrent_project.jar'
+// }
+
+task run(type: Exec) {
+    dependsOn jar
+    executable 'java'
+    args '-jar', "$jar.archivePath"
+}

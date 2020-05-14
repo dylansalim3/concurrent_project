@@ -14,7 +14,8 @@ public class Graph {
         Node n2 = generateNode();
 //        Node n2 = new Node(n1.getX(),n1.getY());
         System.out.println("Node n2 created : "+n2.toString());
-        synchronized (this){
+        synchronized(this){
+
             if(n1.equals(n2)||nodeList.contains(n1)||nodeList.contains(n2)){
                 System.out.println("Line creation failed. Duplicate node detected.");
                 return null;

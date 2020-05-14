@@ -11,10 +11,10 @@ public class GraphWorker implements Runnable {
     public void run() {
         int attempts = 0;
         Line l;
-            do {
-                l = graph.drawLine();
-                attempts++;
-            } while (l == null && attempts < 20);
+        do {
+            l = graph.drawLine();
+            attempts++;
+        } while (l == null && attempts < 20);
         if (l != null) {
             line = l;
         } else {

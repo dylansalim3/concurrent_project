@@ -31,8 +31,11 @@ public class ConcurrentProject {
 
         try {
             if (!executorService.awaitTermination(m, TimeUnit.MILLISECONDS)) {
-                System.out.println("Terminated");
                 executorService.shutdown();
+                if (!executorService.isTerminated()) {
+                    executorService.shutdownNow();
+                }
+                System.out.println("Terminated");
             }
         } catch (InterruptedException e) {
             executorService.shutdownNow();
@@ -41,12 +44,13 @@ public class ConcurrentProject {
         List<Line> lineList = new ArrayList<>();
         try{
             for(int i=0;i<lineFutures.size();i++){
-                lineFutures.get(i).get();
-                lineList.add(graphWorkers[i].getLine());
+                Future future = lineFutures.get(i);
+                if(executorService.isTerminated() && !future.isDone()){
+                    lineFutures.get(i).cancel(true);
+                }else{
+                    lineList.add(graphWorkers[i].getLine());
+                }
             }
-        }catch (ExecutionException e){
-            System.out.println("Execution Exception occurs");
-            e.printStackTrace();
         }catch(InterruptedException e){
             System.out.println("Interrupted Exception occurs");
             e.printStackTrace();
@@ -59,7 +63,7 @@ public class ConcurrentProject {
 
 
     public static void printLineDetails(List<Line> lineList) {
-        System.out.println("line size " + lineList.size());
+        System.out.println("Line size :" + lineList.size());
         System.out.println("Line list :" + lineList.toString());
     }
 }

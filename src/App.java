@@ -2,6 +2,7 @@ import java.util.function.UnaryOperator;
 
 import com.jfoenix.controls.JFXTextField;
 
+import javafx.scene.control.Label;
 import org.graphstream.ui.fx_viewer.FxDefaultView;
 import org.graphstream.ui.fx_viewer.FxViewer;
 import javafx.application.Application;
@@ -35,6 +36,7 @@ public class App extends Application {
         controller.graphParent.getChildren().add(view);
         view.prefHeightProperty().bind(controller.graphParent.heightProperty());
         view.prefWidthProperty().bind(controller.graphParent.widthProperty());
+        view.toBack();
 
         // Show and maximize windows
         Scene scene = new Scene(root);
@@ -59,6 +61,10 @@ class Controller {
     JFXTextField threadsInput;
     @FXML
     JFXTextField timeoutInput;
+    @FXML
+    Label nodeCount;
+    @FXML
+    Label lineCount;
 
     void formatText() {
         UnaryOperator<Change> filter = change -> (change.getControlNewText().matches("([1-9][0-9]*)?")) ? change : null;
@@ -77,7 +83,7 @@ class Controller {
             return false;
         }
 
-        if (Integer.valueOf(threads) > Integer.valueOf(nodesize)) {
+        if (Integer.parseInt(threads) > Integer.parseInt(nodesize)) {
             displayError("Threads count should be smaller or equal to nodes size");
             return false;
         }
@@ -95,11 +101,21 @@ class Controller {
             return;
         }
 
-        int nodesize = Integer.valueOf(nodesizeInput.getText());
-        int threads = Integer.valueOf(threadsInput.getText());
-        int timeout = Integer.valueOf(timeoutInput.getText());
+        int nodesize = Integer.parseInt(nodesizeInput.getText());
+        int threads = Integer.parseInt(threadsInput.getText());
+        int timeout = Integer.parseInt(timeoutInput.getText());
 
         Draw.clear();
         ConcurrentProject.run(timeout, nodesize, threads);
+        setNodeCount(Draw.getNodeCount());
+        setLineCount(Draw.getEdgeCount());
+    }
+
+    void setNodeCount(int count) {
+        nodeCount.setText(String.valueOf(count));
+    }
+
+    void setLineCount(int count) {
+        lineCount.setText(String.valueOf(count));
     }
 }

@@ -42,6 +42,14 @@ public class Draw {
         sgraph.clear();
     }
 
+    public static int getNodeCount() {
+        return sgraph.getNodeCount();
+    }
+
+    public static int getEdgeCount() {
+        return sgraph.getEdgeCount();
+    }
+
     /**
      * @link https://stackoverflow.com/questions/44675827/how-to-zoom-into-a-graphstream-view
      */

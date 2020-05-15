@@ -82,8 +82,8 @@ class Controller {
             return false;
         }
 
-        if (Integer.parseInt(threads) > Integer.parseInt(nodesize)) {
-            displayError("Threads count should be smaller or equal to nodes size");
+        if (Integer.parseInt(threads) == 0) {
+            displayError("Should have at least one thread");
             return false;
         }
 
@@ -111,7 +111,7 @@ class Controller {
     }
 
     void setNodeCount(int count) {
-        nodeCount.setText(String.valueOf(count));
+        nodeCount.setText(String.valueOf(count / 2));
     }
 
     void setLineCount(int count) {

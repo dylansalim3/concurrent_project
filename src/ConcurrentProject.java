@@ -22,6 +22,7 @@ public class ConcurrentProject {
         @param t - Threads
      */
     static void run(int m, int n, int t) {
+        n=n/2;
         Graph graph = new Graph();
         GraphWorker[] graphWorkers = new GraphWorker[n];
         ExecutorService executorService = Executors.newFixedThreadPool(t);

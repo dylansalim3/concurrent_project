@@ -111,7 +111,7 @@ class Controller {
     }
 
     void setNodeCount(int count) {
-        nodeCount.setText(String.valueOf(count / 2));
+        nodeCount.setText(String.valueOf(count));
     }
 
     void setLineCount(int count) {

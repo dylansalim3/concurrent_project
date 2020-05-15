@@ -18,7 +18,7 @@
                   <Font name="System Bold" size="38.0" />
                </font>
             </Label>
-            <JFXTextField fx:id="nodesizeInput" focusColor="#429ae2" labelFloat="true" promptText="Node size" style="-fx-text-inner-color: white; -fx-prompt-text-fill: grey;" unFocusColor="#429ae2">
+            <JFXTextField fx:id="nodesizeInput" focusColor="#429ae2" labelFloat="true" promptText="Points" style="-fx-text-inner-color: white; -fx-prompt-text-fill: grey;" unFocusColor="#429ae2">
                <font>
                   <Font size="18.0" />
                </font>

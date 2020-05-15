@@ -31,7 +31,7 @@ public class App extends Application {
         controller.formatText();
 
         // Draw graph
-        FxViewer viewer = new FxViewer(draw.getSgraph(), FxViewer.ThreadingModel.GRAPH_IN_ANOTHER_THREAD);
+        FxViewer viewer = new FxViewer(Draw.getSgraph(), FxViewer.ThreadingModel.GRAPH_IN_ANOTHER_THREAD);
         FxDefaultView view = (FxDefaultView) viewer.addDefaultView(true);
         controller.graphParent.getChildren().add(view);
         view.prefHeightProperty().bind(controller.graphParent.heightProperty());
@@ -42,7 +42,6 @@ public class App extends Application {
         Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.setTitle("Concurrent Project");
-        stage.initStyle(StageStyle.UNIFIED);
         stage.setMaximized(true);
         stage.show();
     }

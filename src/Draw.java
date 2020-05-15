@@ -58,6 +58,6 @@ public class Draw {
     }
 
     private static String generateId(double x, double y) {
-        return "x:" + x + "," + "y:" + y;
+        return "x:" + x + " " + "y:" + y;
     }
 }

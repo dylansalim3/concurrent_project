@@ -28,7 +28,7 @@
                   <Font size="18.0" />
                </font>
             </JFXTextField>
-            <JFXTextField fx:id="timeoutInput" focusColor="#429ae2" labelFloat="true" onAction="#startClicked" promptText="Timeout" style="-fx-text-inner-color: white; -fx-prompt-text-fill: grey;" unFocusColor="#429ae2">
+            <JFXTextField fx:id="timeoutInput" focusColor="#429ae2" labelFloat="true" onAction="#startClicked" promptText="Timeout (in Milliseconds)" style="-fx-text-inner-color: white; -fx-prompt-text-fill: grey;" unFocusColor="#429ae2">
                <font>
                   <Font size="18.0" />
                </font>

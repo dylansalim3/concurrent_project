@@ -23,7 +23,7 @@ public class ConcurrentProjectCallable {
 //            App.main(args);
 //        } else {
 //            new Draw();
-        run(1, 10000, 2);
+        run(1, 33, 2);
 //        }
     }
 
@@ -34,7 +34,7 @@ public class ConcurrentProjectCallable {
      */
     static void run(int m, int n, int t) {
         int numOfLines = n/2;
-        int numOfRemainingNode = n%2;
+        boolean isNodeNumberOdd = n%2==1;
         Graph graph = new Graph();
         GraphWorkerCallable[] graphWorkers = new GraphWorkerCallable[numOfLines];
         ExecutorService executorService = Executors.newFixedThreadPool(t);
@@ -83,8 +83,12 @@ public class ConcurrentProjectCallable {
             System.out.println("Execution Exception occurs");
             executionExp.printStackTrace();
         }
-        graph.generateNonDuplicateNode();
+
+        if(isNodeNumberOdd){
+            graph.generateNonDuplicateNode();
+        }
         List<Node> nodeList = graph.getNodeList();
+
         printLineDetails(lineList,nodeList);
 
         executorService.shutdown();

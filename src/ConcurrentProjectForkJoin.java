@@ -61,28 +61,29 @@ public class ConcurrentProjectForkJoin {
 //        try{
             for(int i=0;i<recursiveTaskList.size();i++){
                 RecursiveTask<Line> recursiveTask = recursiveTaskList.get(i);
-                System.out.println(recursiveTask.getRawResult());
-                if(recursiveTask.getRawResult()==null){
-
-                }else{
+                boolean isTaskIncomplete = recursiveTask.getRawResult()==null;
+                if(!isTaskIncomplete){
                     Line generatedLine = recursiveTask.join();
-                    if(generatedLine!=null){
-                        lineList.add(generatedLine);
-                    }else{
-                        break;
-                    }
+                    lineList.add(generatedLine);
+                }else{
+                    break;
                 }
             }
 
         if(isNodeNumberOdd){
             graph.generateNonDuplicateNode();
         }
+
+
+
         List<Node> nodeList = graph.getNodeList();
+
 
         printLineDetails(lineList,nodeList);
 
 //        executorService.shutdown();
     }
+
 
 
     public static void printLineDetails(List<Line> lineList,List<Node> nodeList) {

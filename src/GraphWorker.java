@@ -1,7 +1,7 @@
 public class GraphWorker implements Runnable {
     private Graph graph;
     private Line line;
-    private boolean fail;
+    private boolean fail=false;
 
     public GraphWorker(Graph graph) {
         this.graph = graph;

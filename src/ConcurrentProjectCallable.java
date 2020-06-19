@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.*;
 
-public class ConcurrentProject {
+public class ConcurrentProjectCallable {
 //    public static void main(String[] args) {
 //        // set to false if you want to test without gui
 //        boolean gui = true;
@@ -23,7 +23,7 @@ public class ConcurrentProject {
 //            App.main(args);
 //        } else {
 //            new Draw();
-            run(1, 10000, 2);
+        run(1, 10000, 2);
 //        }
     }
 
@@ -36,15 +36,17 @@ public class ConcurrentProject {
         int numOfLines = n/2;
         int numOfRemainingNode = n%2;
         Graph graph = new Graph();
-        GraphWorker[] graphWorkers = new GraphWorker[numOfLines];
+        GraphWorkerCallable[] graphWorkers = new GraphWorkerCallable[numOfLines];
         ExecutorService executorService = Executors.newFixedThreadPool(t);
         List<Future> lineFutures = new ArrayList<>();
         for (int i = 0; i < numOfLines; i++) {
-            GraphWorker graphWorker = new GraphWorker(graph);
+            GraphWorkerCallable graphWorker = new GraphWorkerCallable(graph);
             graphWorkers[i] = graphWorker;
             Future lineFuture = executorService.submit(graphWorker);
             lineFutures.add(lineFuture);
         }
+
+
 
         try {
             if (!executorService.awaitTermination(m, TimeUnit.MILLISECONDS)) {
@@ -61,17 +63,11 @@ public class ConcurrentProject {
         List<Line> lineList = new ArrayList<>();
         try{
             for(int i=0;i<lineFutures.size();i++){
-                Future future = lineFutures.get(i);
-                System.out.println(future);
-                System.out.println(executorService.isTerminated());
-                System.out.println(future.isDone());
+                Future<Line> future = lineFutures.get(i);
                 if(executorService.isTerminated() && !future.isDone()){
-                    System.out.println("istermindated");
                     lineFutures.get(i).cancel(true);
                 }else{
-                    System.out.println(graphWorkers[i].getLine());
-                    Line generatedLine = graphWorkers[i].getLine();
-                    System.out.println(generatedLine);
+                    Line generatedLine = future.get();
                     if(generatedLine!=null){
 
                         lineList.add(generatedLine);
@@ -83,18 +79,23 @@ public class ConcurrentProject {
         }catch(InterruptedException e){
             System.out.println("Interrupted Exception occurs");
             e.printStackTrace();
+        }catch(ExecutionException executionExp){
+            System.out.println("Execution Exception occurs");
+            executionExp.printStackTrace();
         }
         graph.generateNonDuplicateNode();
         List<Node> nodeList = graph.getNodeList();
-        printLineDetails(lineList);
+        printLineDetails(lineList,nodeList);
 
         executorService.shutdown();
     }
 
 
-    public static void printLineDetails(List<Line> lineList) {
+    public static void printLineDetails(List<Line> lineList,List<Node> nodeList) {
         System.out.println("Line size :" + lineList.size());
         System.out.println("Line list :" + lineList.toString());
+        System.out.println("Node Size: "+nodeList.size());
+        System.out.println("Node list : "+nodeList.toString());
 
         for (Line line : lineList) {
             Node n1 = line.getN1();
@@ -107,3 +108,4 @@ public class ConcurrentProject {
         }
     }
 }
+

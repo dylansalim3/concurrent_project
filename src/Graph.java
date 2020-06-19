@@ -1,7 +1,7 @@
 import java.util.*;
 
 public class Graph {
-    private final double MAX_AXIS_SIZE = 10000.00;
+    private final int MAX_AXIS_SIZE = 1000;
     private List<Node> nodeList;
 
     public Graph() {
@@ -11,8 +11,8 @@ public class Graph {
     public Line drawLine(){
         Node n1 = generateNode();
         System.out.println("Node n1 created : "+n1.toString());
+//        Node n2 = generateNode();
         Node n2 = generateNode();
-//        Node n2 = new Node(n1.getX(),n1.getY());
         System.out.println("Node n2 created : "+n2.toString());
         synchronized(this){
 
@@ -29,10 +29,18 @@ public class Graph {
         }
     }
 
+    public void generateNonDuplicateNode(){
+        Node node;
+        do{
+            node = generateNode();
+        }while(nodeList.contains(node));
+        nodeList.add(node);
+    }
+
 
     private Node generateNode(){
-        double x = (double)Math.round(new Random().nextDouble()*MAX_AXIS_SIZE*100)/100;
-        double y = (double)Math.round(new Random().nextDouble()*MAX_AXIS_SIZE*100)/100;
+        double x = (double)Math.round(new Random().nextInt(MAX_AXIS_SIZE*100))/100;
+        double y = (double)Math.round(new Random().nextInt(MAX_AXIS_SIZE*100))/100;
         Node node = new Node(x,y);
         return node;
     }

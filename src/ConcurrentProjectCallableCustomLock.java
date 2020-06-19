@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.*;
 
-public class ConcurrentProjectForkJoin {
+public class ConcurrentProjectCallableCustomLock {
 //    public static void main(String[] args) {
 //        // set to false if you want to test without gui
 //        boolean gui = true;
@@ -35,55 +35,64 @@ public class ConcurrentProjectForkJoin {
     static void run(int m, int n, int t) {
         int numOfLines = n/2;
         boolean isNodeNumberOdd = n%2==1;
-        Graph graph = new Graph();
-        ForkJoinPool forkJoinPool = new ForkJoinPool(t);
-        List<RecursiveTask<Line>> recursiveTaskList = new ArrayList<>();
-
+        CustomLockGraph graph = new CustomLockGraph();
+        GraphWorkerCallable[] graphWorkers = new GraphWorkerCallable[numOfLines];
+        ExecutorService executorService = Executors.newFixedThreadPool(t);
+        List<Future> lineFutures = new ArrayList<>();
         for (int i = 0; i < numOfLines; i++) {
-            RecursiveTask<Line> recursiveTask = new GraphWorkerRecursiveTask(graph);
-            recursiveTaskList.add(recursiveTask);
-            forkJoinPool.execute(recursiveTask);
+            GraphWorkerCallable graphWorker = new GraphWorkerCallable(graph);
+            graphWorkers[i] = graphWorker;
+            Future lineFuture = executorService.submit(graphWorker);
+            lineFutures.add(lineFuture);
         }
 
+
+
         try {
-            if (!forkJoinPool.awaitTermination(m, TimeUnit.MILLISECONDS)) {
-                forkJoinPool.shutdown();
-                if (!forkJoinPool.isTerminated()) {
-                    forkJoinPool.shutdownNow();
+            if (!executorService.awaitTermination(m, TimeUnit.MILLISECONDS)) {
+                executorService.shutdown();
+                if (!executorService.isTerminated()) {
+                    executorService.shutdownNow();
                 }
                 System.out.println("Terminated");
             }
         } catch (InterruptedException e) {
-            forkJoinPool.shutdownNow();
+            executorService.shutdownNow();
         }
 
         List<Line> lineList = new ArrayList<>();
-//        try{
-            for(int i=0;i<recursiveTaskList.size();i++){
-                RecursiveTask<Line> recursiveTask = recursiveTaskList.get(i);
-                boolean isTaskIncomplete = recursiveTask.getRawResult()==null;
-                if(!isTaskIncomplete){
-                    Line generatedLine = recursiveTask.join();
-                    lineList.add(generatedLine);
+        try{
+            for(int i=0;i<lineFutures.size();i++){
+                Future<Line> future = lineFutures.get(i);
+                if(executorService.isTerminated() && !future.isDone()){
+                    lineFutures.get(i).cancel(true);
                 }else{
-                    break;
+                    Line generatedLine = future.get();
+                    if(generatedLine!=null){
+
+                        lineList.add(generatedLine);
+                    }else{
+                        break;
+                    }
                 }
             }
+        }catch(InterruptedException e){
+            System.out.println("Interrupted Exception occurs");
+            e.printStackTrace();
+        }catch(ExecutionException executionExp){
+            System.out.println("Execution Exception occurs");
+            executionExp.printStackTrace();
+        }
 
         if(isNodeNumberOdd){
             graph.generateNonDuplicateNode();
         }
-
-
-
         List<Node> nodeList = graph.getNodeList();
-
 
         printLineDetails(lineList,nodeList);
 
-//        executorService.shutdown();
+        executorService.shutdown();
     }
-
 
 
     public static void printLineDetails(List<Line> lineList,List<Node> nodeList) {

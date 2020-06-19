@@ -23,7 +23,7 @@ public class ConcurrentProjectCallable {
 //            App.main(args);
 //        } else {
 //            new Draw();
-        run(1, 10000, 2);
+        run(1, 10000, 4);
 //        }
     }
 

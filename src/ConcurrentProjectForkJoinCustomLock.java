@@ -48,7 +48,7 @@ public class ConcurrentProjectForkJoinCustomLock {
             for (int i = 0; i < recursiveTaskList.size(); i++) {
                 RecursiveTask<Line> recursiveTask = recursiveTaskList.get(i);
                 boolean isTaskIncomplete = recursiveTask.getRawResult() == null;
-                if (!isTaskIncomplete) {
+                if (!forkJoinPool.isTerminated() || !isTaskIncomplete) {
                     Line generatedLine = recursiveTask.join();
                     lineList.add(generatedLine);
                 } else {
@@ -56,7 +56,7 @@ public class ConcurrentProjectForkJoinCustomLock {
                 }
             }
         } catch (CancellationException e) {
-            e.printStackTrace();
+            System.out.println(e.toString());
         }
 
         if (isNodeNumberOdd) {

@@ -5,27 +5,6 @@ import java.util.Set;
 import java.util.concurrent.*;
 
 public class ConcurrentProjectCallable {
-//    public static void main(String[] args) {
-//        // set to false if you want to test without gui
-//        boolean gui = true;
-//        if (gui) {
-//            App.main(args);
-//        } else {
-//            new Draw();
-//            run(1, 10000, 2);
-//        }
-//    }
-
-    public static void main(String[] args) {
-        // set to false if you want to test without gui
-//        boolean gui = true;
-//        if (gui) {
-//            App.main(args);
-//        } else {
-//            new Draw();
-        run(1, 10000, 4);
-//        }
-    }
 
     /*
         @param m - Timeout
@@ -104,12 +83,14 @@ public class ConcurrentProjectCallable {
         for (Line line : lineList) {
             Node n1 = line.getN1();
             Node n2 = line.getN2();
-//            Draw.addNode(n1.getX(), n1.getY());
-//            Draw.addNode(n2.getX(), n2.getY());
-//            Draw.addEdge(n1.getX(), n1.getY(), n2.getX(), n2.getY());
+            GraphVisualizer.addLine(n1.getX(), n1.getY(), n2.getX(), n2.getY());
             System.out.println(n1.getX()+ " "+ n1.getY());
             System.out.println(n2.getX()+" "+ n2.getY());
         }
+
+        GraphVisualizer.nodeCount = nodeList.size();
+        GraphVisualizer.edgeCount = lineList.size();
+        GraphVisualizer.setLineList(lineList);
     }
 }
 

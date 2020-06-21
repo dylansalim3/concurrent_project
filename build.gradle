@@ -9,23 +9,23 @@ repositories {
 }
 
 dependencies {
-    compileOnly 'com.github.graphstream:gs-core:2.0-alpha'
-    compileOnly 'com.github.graphstream:gs-ui-javafx:2.0-alpha'
     compileOnly 'com.jfoenix:jfoenix:8.0.9'
+    compileOnly 'de.gsi.chart:chartfx-chart:8.1.5'
+    compileOnly group: 'org.controlsfx', name: 'controlsfx', version: '8.0.5'
 }
 
 sourceSets {
     main.java.srcDir 'src'
     main.resources {
         srcDirs = ["src"]
-        includes = ["**/*.fxml"]
+        includes = ["**/*.fxml", "**/*.css"]
     }
 }
 
 jar {
     from configurations.compileOnly.collect { zipTree(it) }
     from configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
-    manifest.attributes 'Main-Class': 'ConcurrentProject'
+    manifest.attributes 'Main-Class': 'App'
 }
 
 task run(type: Exec) {

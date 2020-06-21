@@ -24,6 +24,7 @@ public class Graph {
                 nodeList.add(n2);
                 Line line = new Line(n1,n2);
                 System.out.println("Line creation successful. Line : "+line.toString());
+//                GraphVisualizer.addLine(line);
                 return line;
             }
         }

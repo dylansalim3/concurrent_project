@@ -1,0 +1,25 @@
+.jfx-combo-box .label {
+    -fx-background-color: #202736;
+    -fx-text-fill: WHITE;
+}
+
+.jfx-combo-box .cell {
+    -fx-background-color: #202736;
+}
+
+.jfx-combo-box .label {
+    -fx-font-size: 15;
+}
+
+.jfx-combo-box {
+    -fx-prompt-text-fill: #808080;
+    -fx-font-size: 18;
+}
+
+.chart {
+    -fx-background-color: transparent;
+}
+
+.chart-plot-background {
+    -fx-background-color: transparent;
+}

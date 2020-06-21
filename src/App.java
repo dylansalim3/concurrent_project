@@ -1,4 +1,6 @@
 import java.util.function.UnaryOperator;
+
+import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
 import javafx.application.Platform;
@@ -64,6 +66,8 @@ class FXController {
     Label nodeCount;
     @FXML
     Label lineCount;
+    @FXML
+    JFXButton table;
 
     @FXML
     public void initialize() {
@@ -121,6 +125,10 @@ class FXController {
     void startClicked(Event e) {
         if (!validateInput()) return;
 
+        if (table.getText().equals("Graph")) {
+            tableClicked(e);
+        }
+
         int nodeSize = Integer.parseInt(nodesizeInput.getText());
         int threads = Integer.parseInt(threadsInput.getText());
         int timeout = Integer.parseInt(timeoutInput.getText());
@@ -164,5 +172,7 @@ class FXController {
             tableContainer.getChildren().add(tableView);
             new Table(tableView, GraphVisualizer.getLineList());
         }
+
+        table.setText(table.getText().equals("Graph") ? "Table" : "Graph");
     }
 }

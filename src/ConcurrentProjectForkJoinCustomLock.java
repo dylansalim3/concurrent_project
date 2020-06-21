@@ -82,9 +82,8 @@ public class ConcurrentProjectForkJoinCustomLock {
             GraphVisualizer.addLine(n1.getX(), n1.getY(), n2.getX(), n2.getY());
         }
 
-        if (nodeList.size() != 0) {
-            Node n = nodeList.get(0);
-            GraphVisualizer.addDot(n.getX(), n.getY());
+        for (Node node : nodeList) {
+            GraphVisualizer.addDot(node.getX(), node.getY());
         }
 
         GraphVisualizer.setLineList(lineList);

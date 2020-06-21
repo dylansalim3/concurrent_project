@@ -73,23 +73,23 @@ public class ConcurrentProjectCallableCustomLock {
     }
 
 
-    public static void printLineDetails(List<Line> lineList, List<Node> nodeList) {
-        System.out.println("Line size :" + lineList.size());
-        System.out.println("Line list :" + lineList.toString());
-        System.out.println("Node Size: " + nodeList.size());
-        System.out.println("Node list : " + nodeList.toString());
+    public static void printLineDetails(List<Line> lineList,List<Node> nodeList) {
+        GraphVisualizer.nodeCount = nodeList.size();
+        GraphVisualizer.edgeCount = lineList.size();
 
         for (Line line : lineList) {
             Node n1 = line.getN1();
             Node n2 = line.getN2();
-
+            nodeList.remove(n1);
+            nodeList.remove(n2);
             GraphVisualizer.addLine(n1.getX(), n1.getY(), n2.getX(), n2.getY());
-            System.out.println(n1.getX() + " " + n1.getY());
-            System.out.println(n2.getX() + " " + n2.getY());
         }
 
-        GraphVisualizer.nodeCount = nodeList.size();
-        GraphVisualizer.edgeCount = lineList.size();
+        if (nodeList.size() != 0) {
+            Node n = nodeList.get(0);
+            GraphVisualizer.addDot(n.getX(), n.getY());
+        }
+
         GraphVisualizer.setLineList(lineList);
     }
 }

@@ -139,10 +139,8 @@ class FXController {
 
         Platform.runLater(() -> {
             displayMessage("Done", "info");
-            System.out.println("WHERE R U");
 
             if (GraphVisualizer.failed) {
-                System.out.println("WHERE R U");
                 displayMessage("One of the threads has failed to form a single edge after 20 attempts.", "error");
             }
         });

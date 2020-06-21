@@ -46,6 +46,14 @@ public class GraphVisualizer {
         });
     }
 
+    public static void addDot(double x, double y) {
+        XYChart.Series<Number, Number> series = new XYChart.Series<>();
+        series.getData().add(new XYChart.Data<>(x, y));
+        Platform.runLater(() -> {
+            lineChart.getData().add(series);
+        });
+    }
+
     public static void setLineList(List<Line> list) {
         lineList = list;
     }

@@ -125,6 +125,10 @@ class FXController {
     void startClicked(Event e) {
         if (!validateInput()) return;
 
+        if (table.getText().equals("Graph")) {
+            tableClicked(e);
+        }
+
         int nodeSize = Integer.parseInt(nodesizeInput.getText());
         int threads = Integer.parseInt(threadsInput.getText());
         int timeout = Integer.parseInt(timeoutInput.getText());

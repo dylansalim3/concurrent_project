@@ -11,7 +11,8 @@ import java.util.List;
 public class GraphVisualizer {
     public static int nodeCount = 0;
     public static int edgeCount = 0;
-    public static boolean failed = false;
+    private static boolean failed = false;
+    private static long failedThreadID;
 
     private static List<Line> lineList = new ArrayList<>();
     private static int total = 0;
@@ -46,6 +47,7 @@ public class GraphVisualizer {
         });
     }
 
+
     public static void addDot(double x, double y) {
         XYChart.Series<Number, Number> series = new XYChart.Series<>();
         series.getData().add(new XYChart.Data<>(x, y));
@@ -60,5 +62,18 @@ public class GraphVisualizer {
 
     public static List<Line> getLineList() {
         return lineList;
+    }
+
+    public static void showFailedAttemptErrorMessage(long threadID){
+        failed = true;
+        failedThreadID=threadID;
+    }
+
+    public static boolean isAttemptFailed(){
+        return failed;
+    }
+
+    public static void resetFailedStatus(){
+        failed = false;
     }
 }

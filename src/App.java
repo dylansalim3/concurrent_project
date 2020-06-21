@@ -128,7 +128,7 @@ class FXController {
 
         chartContainer.getChildren().clear();
         GraphVisualizer.init(chartContainer);
-        GraphVisualizer.failed = false;
+        GraphVisualizer.resetFailedStatus();
 
         displayMessage("Running", "info");
 
@@ -140,7 +140,8 @@ class FXController {
         Platform.runLater(() -> {
             displayMessage("Done", "info");
 
-            if (GraphVisualizer.failed) {
+            if (GraphVisualizer.isAttemptFailed()) {
+                System.out.println("WHERE R U");
                 displayMessage("One of the threads has failed to form a single edge after 20 attempts.", "error");
             }
         });

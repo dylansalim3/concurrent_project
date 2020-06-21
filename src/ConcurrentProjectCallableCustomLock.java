@@ -1,7 +1,5 @@
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.concurrent.*;
 
 public class ConcurrentProjectCallableCustomLock {
@@ -11,9 +9,13 @@ public class ConcurrentProjectCallableCustomLock {
         @param numOfLines - Node size
         @param t - Threads
      */
+
+    // Entry method of Callable Custom Lock
     static void run(int m, int n, int t) {
         int numOfLines = n / 2;
         boolean isNodeNumberOdd = n % 2 == 1;
+        boolean isEmptyTimeout = m <= 0;
+
         CustomLockGraph graph = new CustomLockGraph();
         GraphWorkerCallable[] graphWorkers = new GraphWorkerCallable[numOfLines];
         ExecutorService executorService = Executors.newFixedThreadPool(t);
@@ -25,20 +27,22 @@ public class ConcurrentProjectCallableCustomLock {
             lineFutures.add(lineFuture);
         }
 
-
-        try {
-            if (!executorService.awaitTermination(m, TimeUnit.MILLISECONDS)) {
-                executorService.shutdown();
-                if (!executorService.isTerminated()) {
-                    executorService.shutdownNow();
+        if (!isEmptyTimeout) {
+            try {
+                if (!executorService.awaitTermination(m, TimeUnit.MILLISECONDS)) {
+                    executorService.shutdown();
+                    if (!executorService.isTerminated()) {
+                        executorService.shutdownNow();
+                    }
+                    System.out.println("Terminated");
                 }
-                System.out.println("Terminated");
+            } catch (InterruptedException e) {
+                executorService.shutdownNow();
             }
-        } catch (InterruptedException e) {
-            executorService.shutdownNow();
         }
 
         List<Line> lineList = new ArrayList<>();
+
         try {
             for (int i = 0; i < lineFutures.size(); i++) {
                 Future<Line> future = lineFutures.get(i);
@@ -62,6 +66,7 @@ public class ConcurrentProjectCallableCustomLock {
             executionExp.printStackTrace();
         }
 
+
         if (isNodeNumberOdd) {
             graph.generateNonDuplicateNode();
         }
@@ -73,7 +78,7 @@ public class ConcurrentProjectCallableCustomLock {
     }
 
 
-    public static void printLineDetails(List<Line> lineList,List<Node> nodeList) {
+    public static void printLineDetails(List<Line> lineList, List<Node> nodeList) {
         GraphVisualizer.nodeCount = nodeList.size();
         GraphVisualizer.edgeCount = lineList.size();
 

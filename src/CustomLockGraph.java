@@ -25,13 +25,14 @@ public class CustomLockGraph extends Graph{
             writeLock.lock();
             if(n1.equals(n2)||nodeList.contains(n1)||nodeList.contains(n2)){
                 System.out.println("Line creation failed. Duplicate node detected.");
+                long failedThreadId = Thread.currentThread().getId();
+                GraphVisualizer.showFailedAttemptErrorMessage(failedThreadId);
                 return null;
             }else{
                 nodeList.add(n1);
                 nodeList.add(n2);
                 Line line = new Line(n1,n2);
                 System.out.println("Line creation successful. Line : "+line.toString());
-//                GraphVisualizer.addLine(line);
                 return line;
             }
         }catch(InterruptedException e){

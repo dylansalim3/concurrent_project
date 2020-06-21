@@ -11,9 +11,16 @@ public class ConcurrentProjectCallable {
         @param numOfLines - Node size
         @param t - Threads
      */
+
+    public static void main(String[] args){
+        run(1,11,2);
+    }
+
     static void run(int m, int n, int t) {
         int numOfLines = n/2;
         boolean isNodeNumberOdd = n%2==1;
+        boolean isEmptyTimeout = m <= 0;
+
         Graph graph = new Graph();
         GraphWorkerCallable[] graphWorkers = new GraphWorkerCallable[numOfLines];
         ExecutorService executorService = Executors.newFixedThreadPool(t);
@@ -26,20 +33,21 @@ public class ConcurrentProjectCallable {
         }
 
 
-
-        try {
-            if (!executorService.awaitTermination(m, TimeUnit.MILLISECONDS)) {
-                executorService.shutdown();
-                if (!executorService.isTerminated()) {
-                    executorService.shutdownNow();
+        List<Line> lineList = new ArrayList<>();
+        if(!isEmptyTimeout){
+            try {
+                if (!executorService.awaitTermination(m, TimeUnit.MILLISECONDS)) {
+                    executorService.shutdown();
+                    if (!executorService.isTerminated()) {
+                        executorService.shutdownNow();
+                    }
+                    System.out.println("Terminated");
                 }
-                System.out.println("Terminated");
+            } catch (InterruptedException e) {
+                executorService.shutdownNow();
             }
-        } catch (InterruptedException e) {
-            executorService.shutdownNow();
         }
 
-        List<Line> lineList = new ArrayList<>();
         try{
             for(int i=0;i<lineFutures.size();i++){
                 Future<Line> future = lineFutures.get(i);

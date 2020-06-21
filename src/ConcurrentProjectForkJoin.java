@@ -1,8 +1,9 @@
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
-import java.util.concurrent.*;
+import java.util.concurrent.CancellationException;
+import java.util.concurrent.ForkJoinPool;
+import java.util.concurrent.RecursiveTask;
+import java.util.concurrent.TimeUnit;
 
 public class ConcurrentProjectForkJoin {
 
@@ -11,9 +12,12 @@ public class ConcurrentProjectForkJoin {
         @param numOfLines - Node size
         @param t - Threads
      */
+    // Entry method for ForkJoin
     static void run(int m, int n, int t) {
-        int numOfLines = n/2;
-        boolean isNodeNumberOdd = n%2==1;
+        int numOfLines = n / 2;
+        boolean isNodeNumberOdd = n % 2 == 1;
+        boolean isEmptyTimeout = m <= 0;
+
         Graph graph = new Graph();
         ForkJoinPool forkJoinPool = new ForkJoinPool(t);
         List<RecursiveTask<Line>> recursiveTaskList = new ArrayList<>();
@@ -24,48 +28,53 @@ public class ConcurrentProjectForkJoin {
             forkJoinPool.execute(recursiveTask);
         }
 
-        try {
-            if (!forkJoinPool.awaitTermination(m, TimeUnit.MILLISECONDS)) {
-                forkJoinPool.shutdown();
-                if (!forkJoinPool.isTerminated()) {
-                    forkJoinPool.shutdownNow();
+        if (!isEmptyTimeout) {
+            try {
+                if (!forkJoinPool.awaitTermination(m, TimeUnit.MILLISECONDS)) {
+                    forkJoinPool.shutdown();
+                    if (!forkJoinPool.isTerminated()) {
+                        forkJoinPool.shutdownNow();
+                    }
+                    System.out.println("Terminated");
                 }
-                System.out.println("Terminated");
+            } catch (InterruptedException e) {
+                forkJoinPool.shutdownNow();
             }
-        } catch (InterruptedException e) {
-            forkJoinPool.shutdownNow();
+
         }
 
         List<Line> lineList = new ArrayList<>();
-//        try{
-            for(int i=0;i<recursiveTaskList.size();i++){
+
+        try {
+            for (int i = 0; i < recursiveTaskList.size(); i++) {
                 RecursiveTask<Line> recursiveTask = recursiveTaskList.get(i);
-                boolean isTaskIncomplete = recursiveTask.getRawResult()==null;
-                if(!isTaskIncomplete){
+                boolean isTaskIncomplete = recursiveTask.getRawResult() == null;
+                if (!isTaskIncomplete) {
                     Line generatedLine = recursiveTask.join();
                     lineList.add(generatedLine);
-                }else{
+                } else {
                     break;
                 }
             }
-
-        if(isNodeNumberOdd){
-            graph.generateNonDuplicateNode();
+        } catch (CancellationException e) {
+            e.printStackTrace();
         }
 
+
+        if (isNodeNumberOdd) {
+            graph.generateNonDuplicateNode();
+        }
 
 
         List<Node> nodeList = graph.getNodeList();
 
 
-        printLineDetails(lineList,nodeList);
+        printLineDetails(lineList, nodeList);
 
-//        executorService.shutdown();
     }
 
 
-
-    public static void printLineDetails(List<Line> lineList,List<Node> nodeList) {
+    public static void printLineDetails(List<Line> lineList, List<Node> nodeList) {
         GraphVisualizer.nodeCount = nodeList.size();
         GraphVisualizer.edgeCount = lineList.size();
 

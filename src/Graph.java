@@ -15,16 +15,24 @@ public class Graph {
         Node n2 = generateNode();
         System.out.println("Node n2 created : "+n2.toString());
         synchronized(this){
+            try{
+                if(Thread.currentThread().isInterrupted()){
+                    throw new InterruptedException("The thread is interrupted");
+                }
+            }catch(InterruptedException e){
+                return null;
+            }
 
             if(n1.equals(n2)||nodeList.contains(n1)||nodeList.contains(n2)){
                 System.out.println("Line creation failed. Duplicate node detected.");
+                long failedThreadId = Thread.currentThread().getId();
+                GraphVisualizer.showFailedAttemptErrorMessage(failedThreadId);
                 return null;
             }else{
                 nodeList.add(n1);
                 nodeList.add(n2);
                 Line line = new Line(n1,n2);
                 System.out.println("Line creation successful. Line : "+line.toString());
-//                GraphVisualizer.addLine(line);
                 return line;
             }
         }

@@ -18,6 +18,15 @@ import javafx.scene.control.TextFormatter.Change;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
+/*
+    This is the entry point for JavaFX application (GUI)
+    It is responsible for
+        - Initialize the windows with buttons, text fields etc
+        - Load css and fxml to style the application
+        - Initialize controller to set the behavior of each button and field
+        - Listening to user actions and inputs
+ */
+
 public class App extends Application {
 
     @Override
@@ -77,6 +86,7 @@ class FXController {
         modeSelector.getSelectionModel().selectFirst();
     }
 
+    // Restrict user input to numbers only
     void formatText() {
         UnaryOperator<Change> filter = change -> (change.getControlNewText().matches("([1-9][0-9]*)?")) ? change : null;
         UnaryOperator<Change> filter2 = change -> (change.getControlNewText().matches("([0-9][0-9]*)?")) ? change : null;
@@ -85,6 +95,9 @@ class FXController {
         timeoutInput.setTextFormatter(new TextFormatter<>(filter2));
     }
 
+    // validate the input
+    //   - All fields need to be filled in
+    //   - Node size and threads needs to be > 1
     boolean validateInput() {
         String nodesize = nodesizeInput.getText();
         String threads = threadsInput.getText();
@@ -103,6 +116,8 @@ class FXController {
         return true;
     }
 
+    // Display notification at bottom right of the screen
+    // Mode [ warning, error, info ]
     void displayMessage(String message, String mode) {
         Notifications notifications = Notifications.create()
                 .title(mode)
@@ -122,6 +137,7 @@ class FXController {
     }
 
     @FXML
+    // Trigger when start button is clicked
     void startClicked(Event e) {
         if (!validateInput()) return;
 
@@ -149,21 +165,23 @@ class FXController {
             displayMessage("Done", "info");
 
             if (GraphVisualizer.isAttemptFailed()) {
-                System.out.println("WHERE R U");
                 displayMessage("One of the threads has failed to form a single edge after 20 attempts.", "error");
             }
         });
     }
 
+    // Update the node count label
     void setNodeCount(int count) {
         nodeCount.setText(String.valueOf(count));
     }
 
+    // Update the line count label
     void setLineCount(int count) {
         lineCount.setText(String.valueOf(count));
     }
 
     @FXML
+    // Trigger when Table/Graph button is clicked
     void tableClicked(Event e) {
         if (tableContainer.getChildren().size() > 0) {
             tableContainer.getChildren().clear();

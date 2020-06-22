@@ -3,7 +3,6 @@ import java.util.concurrent.Callable;
 public class GraphWorkerCallable implements Callable<Line> {
     private Graph graph;
     private Line line;
-    private boolean fail=false;
 
     public GraphWorkerCallable(Graph graph){
         this.graph = graph;

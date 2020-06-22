@@ -19,7 +19,7 @@ public class ConcurrentProjectCallable {
         boolean isNodeNumberOdd = n%2==1;
         boolean isEmptyTimeout = m <= 0;
 
-        CustomLockGraph graph = new CustomLockGraph();
+        Graph graph = new Graph();
         GraphWorkerCallable[] graphWorkers = new GraphWorkerCallable[numOfLines];
         ExecutorService executorService = Executors.newFixedThreadPool(t);
         List<Future> lineFutures = new ArrayList<>();

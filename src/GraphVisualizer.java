@@ -74,6 +74,9 @@ public class GraphVisualizer {
         failedThreadID=threadID;
     }
 
+    public static long getFailedThreadID(){ return failedThreadID;}
+
+
     public static boolean isAttemptFailed(){
         return failed;
     }

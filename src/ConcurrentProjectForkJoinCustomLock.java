@@ -12,7 +12,7 @@ public class ConcurrentProjectForkJoinCustomLock {
         @param numOfLines - Node size
         @param t - Threads
      */
-
+// Entry method for ForkJoin Custom Lock
     static void run(int m, int n, int t) {
         int numOfLines = n / 2;
         boolean isNodeNumberOdd = n % 2 == 1;

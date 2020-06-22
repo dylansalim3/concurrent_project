@@ -22,6 +22,7 @@ public class CustomLockGraph extends Graph{
             if(Thread.currentThread().isInterrupted()){
                 throw new InterruptedException("The thread is interrupted");
             }
+            //Acquire the write lock before forming an edge
             writeLock.lock();
             if(n1.equals(n2)||nodeList.contains(n1)||nodeList.contains(n2)){
                 System.out.println("Line creation failed. Duplicate node detected.");
@@ -38,6 +39,7 @@ public class CustomLockGraph extends Graph{
         }catch(InterruptedException e){
             return null;
         }finally{
+            // Unlock the thread after the thread is done
             try{
                 writeLock.unlock();
             }catch (IllegalMonitorStateException e){

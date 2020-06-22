@@ -8,20 +8,18 @@ public class ConcurrentProjectCallable {
 
     /*
         @param m - Timeout
-        @param numOfLines - Node size
+        @param n - Randomized Points
         @param t - Threads
+        n>>t
      */
 
-    public static void main(String[] args){
-        run(1,11,2);
-    }
-
+    // Entry method for callable
     static void run(int m, int n, int t) {
         int numOfLines = n/2;
         boolean isNodeNumberOdd = n%2==1;
         boolean isEmptyTimeout = m <= 0;
 
-        Graph graph = new Graph();
+        CustomLockGraph graph = new CustomLockGraph();
         GraphWorkerCallable[] graphWorkers = new GraphWorkerCallable[numOfLines];
         ExecutorService executorService = Executors.newFixedThreadPool(t);
         List<Future> lineFutures = new ArrayList<>();
@@ -81,7 +79,7 @@ public class ConcurrentProjectCallable {
         executorService.shutdown();
     }
 
-
+    // Print Line Details on the GUI
     public static void printLineDetails(List<Line> lineList,List<Node> nodeList) {
         GraphVisualizer.nodeCount = nodeList.size();
         GraphVisualizer.edgeCount = lineList.size();

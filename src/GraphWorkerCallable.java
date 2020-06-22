@@ -9,6 +9,7 @@ public class GraphWorkerCallable implements Callable<Line> {
         this.graph = graph;
     }
 
+    // Methods that attempts to draw lines on the graph for 20 times
     @Override
     public Line call() throws Exception {
         int attempts = 0;

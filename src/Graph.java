@@ -8,13 +8,14 @@ public class Graph {
         nodeList = new ArrayList<>();
     }
 
+    //Method to generate nodes and line
     public Line drawLine(){
         Node n1 = generateNode();
         System.out.println("Node n1 created : "+n1.toString());
-//        Node n2 = generateNode();
         Node n2 = generateNode();
         System.out.println("Node n2 created : "+n2.toString());
         synchronized(this){
+            // If the thread is interrupted, return null
             try{
                 if(Thread.currentThread().isInterrupted()){
                     throw new InterruptedException("The thread is interrupted");
@@ -23,6 +24,7 @@ public class Graph {
                 return null;
             }
 
+            //Display error message if a duplicated node is detected
             if(n1.equals(n2)||nodeList.contains(n1)||nodeList.contains(n2)){
                 System.out.println("Line creation failed. Duplicate node detected.");
                 long failedThreadId = Thread.currentThread().getId();

@@ -18,4 +18,8 @@ cd PROJECT_FOLDER/concurrent_project
 gradlew run 
 ```
 
+After the project is built successfully, an executable jar file will be available in the folder listed below
+```
+PROJECT_FOLDER/concurrent_project/build/libs
+```
 

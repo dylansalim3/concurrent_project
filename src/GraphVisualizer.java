@@ -78,6 +78,10 @@ public class GraphVisualizer {
         return failed;
     }
 
+    public static long getFailedThreadID() {
+        return failedThreadID;
+    }
+
     public static void resetFailedStatus(){
         failed = false;
     }

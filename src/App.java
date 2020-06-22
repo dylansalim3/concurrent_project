@@ -165,7 +165,7 @@ class FXController {
             displayMessage("Done", "info");
 
             if (GraphVisualizer.isAttemptFailed()) {
-                displayMessage("One of the threads has failed to form a single edge after 20 attempts.", "error");
+                displayMessage("Thread" + GraphVisualizer.getFailedThreadID() +" has failed to form a single edge after 20 attempts.", "error");
             }
         });
     }

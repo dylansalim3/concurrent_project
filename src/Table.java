@@ -6,7 +6,10 @@ import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.util.List;
 
+// Generate a table on JavaFX application
 public class Table {
+
+    // This constructor will generate the columns and populate the data with provided line list
     public Table(TableView<TableItems> tableView, List<Line> lineList) {
         TableColumn<TableItems, String> lineNumber = new TableColumn<>("Line No");
         lineNumber.setCellValueFactory(new PropertyValueFactory<>("lineNumber"));
@@ -27,6 +30,7 @@ public class Table {
         tableView.getColumns().addAll(lineNumber, node1x, node1y, node2x, node2y);
     }
 
+    // Convert a normal list to observable list
     public ObservableList<TableItems> getAllLines(List<Line> lineList) {
         ObservableList<TableItems> tableItems = FXCollections.observableArrayList();
         int number = 1;

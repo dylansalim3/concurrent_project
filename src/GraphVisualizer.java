@@ -7,7 +7,9 @@ import javafx.scene.layout.StackPane;
 import java.util.ArrayList;
 import java.util.List;
 
-
+/*
+    Responsible for visualize the graph to JavaFX application
+ */
 public class GraphVisualizer {
     public static int nodeCount = 0;
     public static int edgeCount = 0;
@@ -19,6 +21,7 @@ public class GraphVisualizer {
     private static StackPane container;
     private static LineChart<Number, Number> lineChart;
 
+    // Create a line chart and append to the container provided
     public static void init(StackPane c) {
         container = c;
 
@@ -32,6 +35,7 @@ public class GraphVisualizer {
         container.getChildren().add(lineChart);
     }
 
+    // Draw a line on the graph by providing two points
     public static void addLine(double x1, double x2, double y1, double y2) {
         XYChart.Series<Number, Number> series = new XYChart.Series<>();
         series.getData().add(new XYChart.Data<>(x1, y1));
@@ -47,7 +51,7 @@ public class GraphVisualizer {
         });
     }
 
-
+    // Draw a dot on the graph by providing x y coordinate
     public static void addDot(double x, double y) {
         XYChart.Series<Number, Number> series = new XYChart.Series<>();
         series.getData().add(new XYChart.Data<>(x, y));
@@ -64,6 +68,7 @@ public class GraphVisualizer {
         return lineList;
     }
 
+    // Display error message if one of the thread failed
     public static void showFailedAttemptErrorMessage(long threadID){
         failed = true;
         failedThreadID=threadID;
